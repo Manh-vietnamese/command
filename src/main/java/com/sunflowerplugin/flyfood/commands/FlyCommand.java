@@ -18,25 +18,27 @@ public class FlyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
-        // Kiểm tra quyền
-        if (!player.hasPermission("sunflower.fly")) {
-            player.sendMessage("You do not have permission to fly.");
-            return false;
-        }
 
-        // Lấy config mới nhất
-        Config cfg = plugin.getPluginConfig();
+        // Kiểm tra quyền của người chơi
         String permission = "sunflower.fly";  // Quyền mặc định
         if (player.hasPermission("sunflower.fly.vip1")) {
             permission = "sunflower.fly.vip1";  // Nếu người chơi có quyền vip
         }
 
+        // Kiểm tra quyền của người chơi trước khi thực hiện lệnh
+        if (!player.hasPermission(permission)) {
+            player.sendMessage("❌ You do not have the required permission to use this command.");
+            return false;
+        }
+
         // Lấy countdown và thời gian sử dụng bay từ cấu hình
+        Config cfg = plugin.getPluginConfig();
         int flyCountdown = cfg.getFlyCountdown(permission);
         int flyUsageTime = cfg.getFlyUsageTime(permission);
 
-        // Nếu không thể lấy giá trị, plugin đã bị vô hiệu hóa trong Config.java
+        // Nếu không có quyền trong config, gửi thông báo lỗi và không thực hiện lệnh
         if (flyCountdown == -1 || flyUsageTime == -1) {
+            player.sendMessage("❌ You do not have the required permission or configuration for this command.");
             return false;
         }
 

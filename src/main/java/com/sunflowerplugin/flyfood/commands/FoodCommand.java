@@ -13,7 +13,6 @@ import java.util.Map;
 public class FoodCommand implements CommandExecutor {
 
     private final MainPlugin plugin;
-    // Tạo map để lưu cooldown cho từng player
     private final Map<Player, Long> foodCooldown = new HashMap<>();
 
     public FoodCommand(MainPlugin plugin) {
@@ -25,29 +24,27 @@ public class FoodCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        // Xác định quyền "sunflower.food.default" hay "sunflower.food.vip1"
-        String permission = "sunflower.food.default";
+        // Kiểm tra quyền của người chơi
+        String permission = "sunflower.food.default"; // Quyền mặc định
         if (player.hasPermission("sunflower.food.vip1")) {
-            permission = "sunflower.food.vip1";
+            permission = "sunflower.food.vip1";  // Nếu người chơi có quyền vip
         }
 
-        // Nếu player không có quyền thì báo
+        // Kiểm tra quyền của người chơi trước khi thực hiện lệnh
         if (!player.hasPermission(permission)) {
-            player.sendMessage("❌ You do not have permission to use this command.");
+            player.sendMessage("❌ You do not have the required permission to use this command.");
             return false;
         }
 
-        // Lấy cooldown từ file config
+        // Kiểm tra quyền và lấy thời gian cooldown từ cấu hình
         Config cfg = plugin.getPluginConfig();
         int foodCooldownTime = cfg.getFoodCooldown(permission);
 
-        // Nếu không thể lấy giá trị, plugin đã bị vô hiệu hóa trong Config.java
+        // Nếu không có quyền trong config, gửi thông báo lỗi và không thực hiện lệnh
         if (foodCooldownTime == -1) {
+            player.sendMessage("❌ You do not have the required permission or configuration for this command.");
             return false;
         }
-
-        // Debugging log to check the cooldown time
-        plugin.getLogger().info("Cooldown time for permission " + permission + ": " + foodCooldownTime);
 
         long currentTime = System.currentTimeMillis();
         long lastUsed = foodCooldown.getOrDefault(player, 0L);

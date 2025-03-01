@@ -1,11 +1,13 @@
 food:
-  default: 40  # Thời gian làm mới lệnh /food cho người chơi bình thường
-  vip1: 50     # Thời gian làm mới lệnh /food cho người chơi VIP1
+  - permission: "sunflower.food.default"
+    cooldown: 40  # Thời gian cooldown cho quyền này
+  - permission: "sunflower.food.vip1"
+    cooldown: 50  # Thời gian cooldown cho quyền này
 
 fly:
-  countdown:
-    sunflower.fly: 61
-    sunflower.fly.vip1: 51
-  usage_time:
-    sunflower.fly: 15
-    sunflower.fly.vip1: 20
+  - permission: "sunflower.fly"
+    countdown: 61  # Thời gian countdown cho quyền này
+    usage_time: 15  # Thời gian sử dụng bay cho quyền này
+  - permission: "sunflower.fly.vip1"
+    countdown: 51
+    usage_time: 20

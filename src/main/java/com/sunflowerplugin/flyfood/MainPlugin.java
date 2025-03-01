@@ -16,11 +16,11 @@ public class MainPlugin extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Bật FlyFood...");
 
-        // Khởi tạo configManager trước khi kiểm tra và tạo lại config nếu cần
-        this.configManager = new Config(this);
-
         // Kiểm tra và tạo lại config nếu tệp bị thiếu hoặc bị hỏng
         this.checkAndCreateConfig();  // Gọi checkAndCreateConfig() để tạo thư mục nếu cần
+
+        // Khởi tạo configManager
+        this.configManager = new Config(this);
 
         try {
             if (getCommand("fly") == null || getCommand("food") == null || getCommand("freload") == null) {
@@ -34,7 +34,7 @@ public class MainPlugin extends JavaPlugin {
 
             reloadConfigs();
         } catch (Exception e) {
-            getLogger().severe("❌ Lỗi khi đăng ký lệnh:" + e.getMessage());
+            getLogger().severe("❌ Lỗi khi đăng ký lệnh: " + e.getMessage());
             getLogger().warning("Exception StackTrace:");
             getLogger().warning(e.toString());
         }
@@ -48,7 +48,7 @@ public class MainPlugin extends JavaPlugin {
     }
 
     // Kiểm tra và tạo lại file config nếu cần thiết
-    private void checkAndCreateConfig() {
+    public void checkAndCreateConfig() {
         File dataFolder = getDataFolder();
 
         // Kiểm tra và tạo thư mục dữ liệu nếu nó không tồn tại

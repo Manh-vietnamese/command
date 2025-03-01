@@ -18,7 +18,7 @@ public class ReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Kiểm tra và tạo lại config nếu cần thiết
-        plugin.getPluginConfig().checkAndCreateConfig();  // Gọi lại phương thức này để đảm bảo thư mục/config được tạo lại
+        plugin.checkAndCreateConfig();  // Gọi lại phương thức này để đảm bảo thư mục/config được tạo lại
 
         plugin.reloadConfigs();  // Tải lại cấu hình
 
