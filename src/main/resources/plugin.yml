@@ -1,0 +1,14 @@
+name: FlyFood
+main: com.sunflowerplugin.flyfood.MainPlugin
+version: 1.0.1
+api-version: 1.19
+commands:
+  fly:
+    description: Toggle fly mode
+    usage: /fly
+  food:
+    description: Restore hunger
+    usage: /food
+  freload:
+    description: Reload plugin configuration
+    usage: /freload

@@ -1,0 +1,11 @@
+food:
+  default: 40  # Thời gian làm mới lệnh /food cho người chơi bình thường
+  vip1: 50     # Thời gian làm mới lệnh /food cho người chơi VIP1
+
+fly:
+  countdown:
+    sunflower.fly: 61
+    sunflower.fly.vip1: 51
+  usage_time:
+    sunflower.fly: 15
+    sunflower.fly.vip1: 20
