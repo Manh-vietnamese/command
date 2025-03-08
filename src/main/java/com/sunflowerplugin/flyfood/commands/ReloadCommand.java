@@ -5,29 +5,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.util.Objects;
-
 public class ReloadCommand implements CommandExecutor {
 
     private final MainPlugin plugin;
+    private final FoodCommand foodCmd;
 
-    public ReloadCommand(MainPlugin plugin) {
+    public ReloadCommand(MainPlugin plugin, FoodCommand foodCmd) {
         this.plugin = plugin;
+        this.foodCmd = foodCmd;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Kiểm tra và tạo lại config nếu cần thiết
-        plugin.checkAndCreateConfig();  // Gọi lại phương thức này để đảm bảo thư mục/config được tạo lại
+        if (args.length == 0) {
+            sender.sendMessage("❌ Please specify the plugin to reload.");
+            return false;
+        }
 
-        plugin.reloadConfigs();  // Tải lại cấu hình
-
-        // Lấy executor của lệnh "food" (phải cùng trong plugin.yml)
-        CommandExecutor foodExecutor = Objects.requireNonNull(plugin.getCommand("food")).getExecutor();
-        if (foodExecutor instanceof FoodCommand) {
-            FoodCommand foodCmd = (FoodCommand) foodExecutor;
-            foodCmd.clearCooldowns();  // Gọi hàm xóa cooldown
-            sender.sendMessage("Đã tải lại config và reset cooldown cho tất cả người chơi!");
+        if (args[0].equalsIgnoreCase("flyfood")) {
+            plugin.reloadConfigs();  // 📌 Khôi phục file nếu bị mất
+            foodCmd.clearCooldowns();  // Xóa cooldown khi reload
+            sender.sendMessage("✔️ FlyFood plugin config reloaded and checked for missing files!");
         }
 
         return true;

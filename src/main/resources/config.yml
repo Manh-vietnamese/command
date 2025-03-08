@@ -1,13 +1,25 @@
-food:
-  - permission: "sunflower.food.default"
-    cooldown: 40  # Thời gian cooldown cho quyền này
-  - permission: "sunflower.food.vip1"
-    cooldown: 50  # Thời gian cooldown cho quyền này
+# Cấu hình thời gian chờ (cooldown) cho food
+food-countdown:
+  vip2: 30
+  vip3: 20
+  vip4: 15
+  vip5: 10
 
-fly:
-  - permission: "sunflower.fly"
-    countdown: 61  # Thời gian countdown cho quyền này
-    usage_time: 15  # Thời gian sử dụng bay cho quyền này
-  - permission: "sunflower.fly.vip1"
-    countdown: 51
-    usage_time: 20
+heal-countdown:
+  vip3: 720  # 12 phút cooldown
+  vip4: 480  # 8 phút cooldown
+  vip5: 300  # 5 phút cooldown
+
+# Cấu hình countdown cho fly
+fly-countdown:
+  vip0: 30
+  vip1: 20
+  vip2: 15
+  vip3: 10
+
+# Cấu hình thời gian bay (usage time)
+fly-usage-time:
+  vip0: 30
+  vip1: 60
+  vip2: 120
+  vip3: 180

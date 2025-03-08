@@ -12,3 +12,36 @@ commands:
   freload:
     description: Reload plugin configuration
     usage: /freload
+  heal:
+    description: Heal yourself to full health.
+    usage: /heal
+permissions:
+  sun.countdown.food.vip0:
+    description: Allows VIP0 to use the food countdown
+    default: op
+  sun.countdown.food.vip1:
+    description: Allows VIP1 to use the food countdown
+    default: op
+  sun.countdown.food.vip2:
+    description: Allows VIP2 to use the food countdown
+    default: op
+
+  sun.countdown.fly.vip0:
+    description: Allows VIP0 to use the fly countdown
+    default: op
+  sun.countdown.fly.vip1:
+    description: Allows VIP1 to use the fly countdown
+    default: op
+  sun.countdown.fly.vip2:
+    description: Allows VIP2 to use the fly countdown
+    default: op
+
+  sun.usage.time.fly.vip0:
+    description: Allows VIP0 to use the fly usage time
+    default: op
+  sun.usage.time.fly.vip1:
+    description: Allows VIP1 to use the fly usage time
+    default: op
+  sun.usage.time.fly.vip2:
+    description: Allows VIP2 to use the fly usage time
+    default: op
