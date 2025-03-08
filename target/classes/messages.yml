@@ -1,0 +1,21 @@
+no_permission: "&cBạn không có quyền sử dụng lệnh này!"
+
+fly_countdown: "⏳ Bạn phải đợi thời gian đếm ngược kết thúc trước khi sử dụng /fly lần nữa!"
+fly_ready: "✅ Bây giờ bạn có thể sử dụng /fly lần nữa."
+fly_expired: "❌ Thời gian bay của bạn đã hết!"
+fly_disabled: "✈️ Chế độ bay đã bị tắt. Bạn phải đợi %time%s trước khi có thể bay lại."
+fly_enabled: "✈️ Chế độ bay đã được bật! Bạn có %time% giây."
+fly_time_left: "⏳ Thời gian bay còn lại: %time%s"
+
+food_only_players: "❌ Chỉ người chơi mới có thể sử dụng lệnh này!"
+food_no_permission: "❌ Bạn không có quyền sử dụng lệnh này!"
+food_cooldown: "⏳ Bạn phải đợi %time% giây trước khi sử dụng /food lần nữa."
+food_executed: "🍽️ Lệnh food đã được thực thi!"
+
+heal_only_players: "❌ Only players can use this command!"
+heal_no_permission: "❌ You do not have permission to use this command!"
+heal_cooldown: "⏳ You must wait %time% seconds before using /heal again."
+heal_success: "❤️ You have been fully healed!"
+
+reload_missing_args: "❌ Please specify the plugin to reload."
+reload_success: "✔️ FlyFood plugin config reloaded and checked for missing files!"
