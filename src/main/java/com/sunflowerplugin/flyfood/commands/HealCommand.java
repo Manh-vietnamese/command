@@ -2,6 +2,7 @@ package com.sunflowerplugin.flyfood.commands;
 
 import com.sunflowerplugin.flyfood.config.Config;
 import com.sunflowerplugin.flyfood.MainPlugin;
+import com.sunflowerplugin.flyfood.messages.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,16 +14,18 @@ import java.util.Map;
 public class HealCommand implements CommandExecutor {
 
     private final MainPlugin plugin;
+    private final MessageManager messageManager;
     private final Map<Player, Long> healCooldowns = new HashMap<>();
 
     public HealCommand(MainPlugin plugin) {
         this.plugin = plugin;
+        this.messageManager = plugin.getMessageManager();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("❌ Only players can use this command!");
+            sender.sendMessage(messageManager.get("heal_only_players"));
             return false;
         }
 
@@ -31,7 +34,7 @@ public class HealCommand implements CommandExecutor {
 
         // 📌 Kiểm tra quyền: Nếu không có quyền, chặn lệnh
         if (rank == null) {
-            player.sendMessage("❌ You do not have permission to use this command!");
+            player.sendMessage(messageManager.get("heal_no_permission"));
             return false;
         }
 
@@ -45,14 +48,16 @@ public class HealCommand implements CommandExecutor {
             long timeRemaining = (lastUsed + healCooldown * 1000) - currentTime;
 
             if (timeRemaining > 0) {
-                player.sendMessage("⏳ You must wait " + timeRemaining / 1000 + " seconds before using /heal again.");
+                Map<String, String> placeholders = new HashMap<>();
+                placeholders.put("time", String.valueOf(timeRemaining / 1000));
+                player.sendMessage(messageManager.get("heal_cooldown", placeholders));
                 return false;
             }
         }
 
         // 📌 Hồi máu đầy đủ cho người chơi
         player.setHealth(player.getMaxHealth());
-        player.sendMessage("❤️ You have been fully healed!");
+        player.sendMessage(messageManager.get("heal_success"));
 
         // 📌 Lưu cooldown
         healCooldowns.put(player, System.currentTimeMillis());
