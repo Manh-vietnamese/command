@@ -1,10 +1,12 @@
 # Cấu hình thời gian chờ (cooldown) cho food
+# sun.countdown.food.<vip>
 food-countdown:
   vip2: 30
   vip3: 20
   vip4: 15
   vip5: 10
 
+# sun.countdown.food.<vip>
 heal-countdown:
   vip3: 720  # 12 phút cooldown
   vip4: 480  # 8 phút cooldown

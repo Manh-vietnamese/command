@@ -14,18 +14,17 @@ public class MainPlugin extends JavaPlugin {
 
     private Config configManager;
     private MessageManager messageManager;
-
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         checkAndCreateConfig();
 
         this.configManager = new Config(this);
-        this.messageManager = new MessageManager(getDataFolder()); // 📌 KHỞI TẠO messageManager TRƯỚC
-
-        // 📌 Đảm bảo messageManager được khởi tạo trước khi truyền vào các command
-
         FoodCommand foodCmd = new FoodCommand(this);
         HealCommand healCmd = new HealCommand(this);
+
+        // 🔥 Sửa lỗi: Truyền `getLogger()` vào `MessageManager`
+        messageManager = new MessageManager(getDataFolder(), getLogger());
 
         // 📌 Đăng ký lệnh
         Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand(this));
@@ -68,7 +67,6 @@ public class MainPlugin extends JavaPlugin {
     public Config getConfigManager() {
         return configManager;
     }
-
     public MessageManager getMessageManager() {
         return messageManager;
     }

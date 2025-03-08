@@ -1,6 +1,7 @@
 package com.sunflowerplugin.flyfood.commands;
 
 import com.sunflowerplugin.flyfood.MainPlugin;
+import com.sunflowerplugin.flyfood.config.ConfigValidator;
 import com.sunflowerplugin.flyfood.messages.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,6 +27,7 @@ public class ReloadCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("flyfood")) {
+            new ConfigValidator(plugin).validateFiles();
             plugin.reloadConfigs();  // 📌 Khôi phục file nếu bị mất
             foodCmd.clearCooldowns();  // Xóa cooldown khi reload
             sender.sendMessage(messageManager.get("reload_success"));
@@ -33,4 +35,6 @@ public class ReloadCommand implements CommandExecutor {
 
         return true;
     }
+
 }
+

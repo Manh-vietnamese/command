@@ -20,42 +20,29 @@ public class FoodCommand implements CommandExecutor {
     public FoodCommand(MainPlugin plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
-
-        // 📌 Kiểm tra nếu messageManager bị null
-        if (this.messageManager == null) {
-            plugin.getLogger().severe("❌ MessageManager chưa được khởi tạo! Kiểm tra lại MainPlugin.java");
-        }
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(messageManager != null ? messageManager.get("food_only_players") : "❌ Only players can use this command!");
-            return false;
-        }
 
         Player player = (Player) sender;
         String rank = getPlayerRank(player);
 
         // 📌 Kiểm tra quyền
         if (rank == null) {
-            player.sendMessage(messageManager != null ? messageManager.get("food_no_permission") : "❌ You do not have permission to use this command!");
+            player.sendMessage(messageManager.get("no_permission"));
             return false;
         }
 
         // 📌 Kiểm tra xem Config có bị null không
         Config cfg = plugin.getConfigManager();
         if (cfg == null) {
-            plugin.getLogger().severe("❌ ConfigManager chưa được khởi tạo! Kiểm tra lại MainPlugin.java");
+            //plugin.getLogger().severe("❌ ConfigManager chưa được khởi tạo! Kiểm tra lại MainPlugin.java");
             player.sendMessage("❌ Plugin gặp lỗi khi lấy config! Liên hệ admin.");
             return false;
         }
 
         int foodCooldown = cfg.getFoodCountdown(rank);
-        if (foodCooldown < 0) {
-            plugin.getLogger().warning("⚠️ Giá trị cooldown cho food của " + rank + " không hợp lệ! Dùng mặc định 30s.");
-            foodCooldown = 30;
-        }
 
         // 📌 Kiểm tra cooldown
         if (foodCooldowns.containsKey(player)) {
@@ -67,14 +54,18 @@ public class FoodCommand implements CommandExecutor {
                 Map<String, String> placeholders = new HashMap<>();
                 placeholders.put("time", String.valueOf(timeRemaining / 1000));
 
-                player.sendMessage(messageManager != null ? messageManager.get("food_cooldown", placeholders) : "⏳ You must wait " + timeRemaining / 1000 + " seconds before using /food again.");
+                player.sendMessage(messageManager.get("Countdown", placeholders));
                 return false;
             }
         }
 
+        // 📌 HỒI THANH ĐÓI - Đặt thanh đói về mức tối đa
+        player.setFoodLevel(20);  // Hồi đầy thanh đói (hunger bar)
+        player.setSaturation(10); // Đặt saturation để tránh giảm đói ngay lập tức
+
         // 📌 Lưu thời gian cooldown
         foodCooldowns.put(player, System.currentTimeMillis());
-        player.sendMessage(messageManager != null ? messageManager.get("food_executed") : "🍽️ Food command executed!");
+        player.sendMessage(messageManager.get("food_executed"));
 
         return true;
     }

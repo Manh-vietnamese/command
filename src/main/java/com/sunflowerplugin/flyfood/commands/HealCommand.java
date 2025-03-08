@@ -24,17 +24,13 @@ public class HealCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(messageManager.get("heal_only_players"));
-            return false;
-        }
 
         Player player = (Player) sender;
         String rank = getPlayerRank(player);
 
         // 📌 Kiểm tra quyền: Nếu không có quyền, chặn lệnh
         if (rank == null) {
-            player.sendMessage(messageManager.get("heal_no_permission"));
+            player.sendMessage(messageManager.get("no_permission"));
             return false;
         }
 
@@ -45,12 +41,12 @@ public class HealCommand implements CommandExecutor {
         if (healCooldowns.containsKey(player)) {
             long lastUsed = healCooldowns.get(player);
             long currentTime = System.currentTimeMillis();
-            long timeRemaining = (lastUsed + healCooldown * 1000) - currentTime;
+            long timeRemaining = (lastUsed + healCooldown * 1000L) - currentTime;
 
             if (timeRemaining > 0) {
                 Map<String, String> placeholders = new HashMap<>();
                 placeholders.put("time", String.valueOf(timeRemaining / 1000));
-                player.sendMessage(messageManager.get("heal_cooldown", placeholders));
+                player.sendMessage(messageManager.get("Countdown", placeholders));
                 return false;
             }
         }
@@ -63,11 +59,6 @@ public class HealCommand implements CommandExecutor {
         healCooldowns.put(player, System.currentTimeMillis());
 
         return true;
-    }
-
-    // 📌 Phương thức xóa cooldown khi reload plugin
-    public void clearCooldowns() {
-        healCooldowns.clear();
     }
 
     private String getPlayerRank(Player player) {
