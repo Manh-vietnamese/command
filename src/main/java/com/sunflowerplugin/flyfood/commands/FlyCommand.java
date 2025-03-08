@@ -19,6 +19,7 @@ public class FlyCommand implements CommandExecutor {
     private final Map<Player, Long> flyStartTimes = new HashMap<>();
     private final Map<Player, Boolean> countdownActive = new HashMap<>();
     private final Map<Player, Boolean> flyEnabled = new HashMap<>();
+    private final Map<Player, Integer> flyCountdownRemaining = new HashMap<>();
 
     public FlyCommand(MainPlugin plugin) {
         this.plugin = plugin;
@@ -26,13 +27,19 @@ public class FlyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-//        if (!(sender instanceof Player)) {
-//            sender.sendMessage("❌ Only players can use this command!");
-//            return false;
-//        }
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("❌ Only players can use this command!");
+            return false;
+        }
 
         Player player = (Player) sender;
         String rank = getPlayerRank(player);
+
+        // 📌 Chặn lệnh nếu người chơi đã có chế độ bay
+        if (player.getAllowFlight() && player.isFlying()) {
+            player.sendMessage("⚠️ You are already flying!");
+            return false;
+        }
 
         // 📌 Kiểm tra quyền: Nếu không có quyền, chặn lệnh
         if (rank == null) {
@@ -44,41 +51,32 @@ public class FlyCommand implements CommandExecutor {
         int flyCountdown = cfg.getFlyCountdown(rank);
         int flyUsageTime = cfg.getFlyUsageTime(rank);
 
+        // 📌 Kiểm tra nếu người chơi đang trong countdown
         if (countdownActive.getOrDefault(player, false)) {
-            sender.sendMessage(plugin.getMessageManager().get("fly_countdown"));
-            return false;
-        }
+            int remainingCountdown = flyCountdownRemaining.getOrDefault(player, 0);
 
-        if (player.isFlying()) {
-            player.setFlying(false);
-            player.setAllowFlight(false);
-
+            // 📌 Tạo placeholders
             Map<String, String> placeholders = new HashMap<>();
-            placeholders.put("time", String.valueOf(flyCountdown));
-            sender.sendMessage(plugin.getMessageManager().get("fly_disabled", placeholders));
+            placeholders.put("time", String.valueOf(remainingCountdown));
 
-            flyStartTimes.remove(player);
-            flyEnabled.put(player, false);
-            countdownActive.put(player, true);
-
-            new BukkitRunnable() {
-                int countdownTime = flyCountdown;
-
-                @Override
-                public void run() {
-                    if (countdownTime > 0) {
-                        countdownTime--;
-                    } else {
-                        countdownActive.put(player, false);
-                        sender.sendMessage(plugin.getMessageManager().get("fly_ready"));
-                        cancel();
-                    }
-                }
-            }.runTaskTimer(plugin, 0L, 20L);
-
+            // 📌 Gửi tin nhắn với thời gian countdown còn lại
+            player.sendMessage(plugin.getMessageManager().get("Countdown", placeholders));
             return false;
         }
 
+        // 📌 Nếu đang bay mà nhập lại lệnh, tắt bay và bắt đầu countdown
+        if (flyEnabled.getOrDefault(player, false)) {
+            disableFlight(player, flyCountdown);
+            return true;
+        }
+
+        // 📌 Bắt đầu thời gian bay
+        enableFlight(player, flyUsageTime);
+        return true;
+    }
+
+    // 📌 Bật chế độ bay
+    private void enableFlight(Player player, int flyUsageTime) {
         player.setAllowFlight(true);
         player.setFlying(true);
         flyStartTimes.put(player, System.currentTimeMillis());
@@ -88,6 +86,7 @@ public class FlyCommand implements CommandExecutor {
         placeholders.put("time", String.valueOf(flyUsageTime));
         player.sendMessage(plugin.getMessageManager().get("fly_enabled", placeholders));
 
+        // 📌 Bắt đầu bộ đếm thời gian bay
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -104,17 +103,41 @@ public class FlyCommand implements CommandExecutor {
                     placeholders.put("time", String.valueOf(remainingTime));
                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(plugin.getMessageManager().get("fly_time_left", placeholders)));
                 } else {
-                    player.setFlying(false);
-                    player.setAllowFlight(false);
-                    player.sendMessage(plugin.getMessageManager().get("fly_expired"));
-                    flyStartTimes.remove(player);
-                    flyEnabled.put(player, false);
+                    disableFlight(player, plugin.getConfigManager().getFlyCountdown(getPlayerRank(player)));
                     cancel();
                 }
             }
         }.runTaskTimer(plugin, 0L, 20L);
+    }
 
-        return true;
+    // 📌 Tắt chế độ bay và bắt đầu countdown
+    private void disableFlight(Player player, int countdownTime) {
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        flyStartTimes.remove(player);
+        flyEnabled.put(player, false);
+        countdownActive.put(player, true);
+        flyCountdownRemaining.put(player, countdownTime);
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("time", String.valueOf(countdownTime));
+        player.sendMessage(plugin.getMessageManager().get("fly_disabled", placeholders));
+
+        // 📌 Bắt đầu countdown
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int remainingCountdown = flyCountdownRemaining.getOrDefault(player, 0);
+                if (remainingCountdown > 0) {
+                    flyCountdownRemaining.put(player, remainingCountdown - 1);
+                } else {
+                    countdownActive.put(player, false);
+                    flyCountdownRemaining.remove(player);
+                    player.sendMessage(plugin.getMessageManager().get("fly_ready"));
+                    cancel();
+                }
+            }
+        }.runTaskTimer(plugin, 0L, 20L);
     }
 
     // 📌 Kiểm tra quyền của người chơi theo đúng `config.yml`
