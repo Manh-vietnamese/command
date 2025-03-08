@@ -1,6 +1,6 @@
 package com.sunflowerplugin.flyfood.commands;
 
-import com.sunflowerplugin.flyfood.Config;
+import com.sunflowerplugin.flyfood.config.Config;
 import com.sunflowerplugin.flyfood.MainPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

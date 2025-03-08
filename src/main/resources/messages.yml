@@ -1,0 +1,8 @@
+no_permission: "&cBạn không có quyền sử dụng lệnh này!"
+
+fly_countdown: "⏳ Bạn phải đợi thời gian đếm ngược kết thúc trước khi sử dụng /fly lần nữa!"
+fly_ready: "✅ Bây giờ bạn có thể sử dụng /fly lần nữa."
+fly_expired: "❌ Thời gian bay của bạn đã hết!"
+fly_disabled: "✈️ Chế độ bay đã bị tắt. Bạn phải đợi %time%s trước khi có thể bay lại."
+fly_enabled: "✈️ Chế độ bay đã được bật! Bạn có %time% giây."
+fly_time_left: "⏳ Thời gian bay còn lại: %time%s"

@@ -1,6 +1,6 @@
 package com.sunflowerplugin.flyfood.commands;
 
-import com.sunflowerplugin.flyfood.Config;
+import com.sunflowerplugin.flyfood.config.Config;
 import com.sunflowerplugin.flyfood.MainPlugin;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,17 +26,17 @@ public class FlyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("❌ Only players can use this command!");
-            return false;
-        }
+//        if (!(sender instanceof Player)) {
+//            sender.sendMessage("❌ Only players can use this command!");
+//            return false;
+//        }
 
         Player player = (Player) sender;
         String rank = getPlayerRank(player);
 
         // 📌 Kiểm tra quyền: Nếu không có quyền, chặn lệnh
         if (rank == null) {
-            player.sendMessage("❌ You do not have permission to use this command!");
+            sender.sendMessage(plugin.getMessageManager().get("no_permission"));
             return false;
         }
 
@@ -45,14 +45,18 @@ public class FlyCommand implements CommandExecutor {
         int flyUsageTime = cfg.getFlyUsageTime(rank);
 
         if (countdownActive.getOrDefault(player, false)) {
-            player.sendMessage("⏳ You must wait for the countdown to finish before using /fly again!");
+            sender.sendMessage(plugin.getMessageManager().get("fly_countdown"));
             return false;
         }
 
         if (player.isFlying()) {
             player.setFlying(false);
             player.setAllowFlight(false);
-            player.sendMessage("✈️ Fly mode disabled. You must wait " + flyCountdown + "s before flying again.");
+
+            Map<String, String> placeholders = new HashMap<>();
+            placeholders.put("time", String.valueOf(flyCountdown));
+            sender.sendMessage(plugin.getMessageManager().get("fly_disabled", placeholders));
+
             flyStartTimes.remove(player);
             flyEnabled.put(player, false);
             countdownActive.put(player, true);
@@ -66,7 +70,7 @@ public class FlyCommand implements CommandExecutor {
                         countdownTime--;
                     } else {
                         countdownActive.put(player, false);
-                        player.sendMessage("✅ You can now use /fly again.");
+                        sender.sendMessage(plugin.getMessageManager().get("fly_ready"));
                         cancel();
                     }
                 }
@@ -80,7 +84,9 @@ public class FlyCommand implements CommandExecutor {
         flyStartTimes.put(player, System.currentTimeMillis());
         flyEnabled.put(player, true);
 
-        player.sendMessage("✈️ Fly mode enabled! You have " + flyUsageTime + " seconds.");
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("time", String.valueOf(flyUsageTime));
+        player.sendMessage(plugin.getMessageManager().get("fly_enabled", placeholders));
 
         new BukkitRunnable() {
             @Override
@@ -94,11 +100,13 @@ public class FlyCommand implements CommandExecutor {
                 int remainingTime = flyUsageTime - (int) elapsedTime;
 
                 if (remainingTime > 0) {
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("⏳ Fly time left: " + remainingTime + "s"));
+                    Map<String, String> placeholders = new HashMap<>();
+                    placeholders.put("time", String.valueOf(remainingTime));
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(plugin.getMessageManager().get("fly_time_left", placeholders)));
                 } else {
                     player.setFlying(false);
                     player.setAllowFlight(false);
-                    player.sendMessage("❌ Your fly time has expired!");
+                    player.sendMessage(plugin.getMessageManager().get("fly_expired"));
                     flyStartTimes.remove(player);
                     flyEnabled.put(player, false);
                     cancel();

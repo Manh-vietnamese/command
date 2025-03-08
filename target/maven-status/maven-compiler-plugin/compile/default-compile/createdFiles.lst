@@ -1,7 +1,8 @@
+com\sunflowerplugin\flyfood\config\Config.class
 com\sunflowerplugin\flyfood\commands\HealCommand.class
 com\sunflowerplugin\flyfood\MainPlugin.class
 com\sunflowerplugin\flyfood\commands\FlyCommand.class
-com\sunflowerplugin\flyfood\Config.class
+com\sunflowerplugin\flyfood\messages\MessageManager.class
 com\sunflowerplugin\flyfood\commands\FlyCommand$1.class
 com\sunflowerplugin\flyfood\commands\FlyCommand$2.class
 com\sunflowerplugin\flyfood\commands\ReloadCommand.class

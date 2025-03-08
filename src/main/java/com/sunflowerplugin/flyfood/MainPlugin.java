@@ -4,6 +4,8 @@ import com.sunflowerplugin.flyfood.commands.FlyCommand;
 import com.sunflowerplugin.flyfood.commands.FoodCommand;
 import com.sunflowerplugin.flyfood.commands.HealCommand;
 import com.sunflowerplugin.flyfood.commands.ReloadCommand;
+import com.sunflowerplugin.flyfood.config.Config;
+import com.sunflowerplugin.flyfood.messages.MessageManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Objects;
@@ -11,6 +13,7 @@ import java.util.Objects;
 public class MainPlugin extends JavaPlugin {
 
     private Config configManager;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
@@ -19,6 +22,7 @@ public class MainPlugin extends JavaPlugin {
         this.configManager = new Config(this);
         FoodCommand foodCmd = new FoodCommand(this);
         HealCommand healCmd = new HealCommand(this);
+        messageManager = new MessageManager(getDataFolder());
 
         // 📌 Đăng ký lệnh
         Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand(this));
@@ -40,17 +44,28 @@ public class MainPlugin extends JavaPlugin {
 
     // 📌 Kiểm tra và tạo lại file config.yml nếu bị mất
     private void checkAndCreateConfig() {
-        File configFile = new File(getDataFolder(), "config.yml");
+        createFile("config.yml", true);
+        createFile("messages.yml", false);
+    }
 
-        if (!configFile.exists()) {
-            getLogger().warning("⚠️ Không tìm thấy config.yml! Đang tạo file mới...");
-            saveDefaultConfig();  // Tạo lại file từ mặc định
-            reloadConfig();
-            getLogger().info("✅ File config.yml đã được khôi phục!");
+    private void createFile(String fileName, boolean isConfig) {
+        File file = new File(getDataFolder(), fileName);
+        if (!file.exists()) {
+            getLogger().warning("⚠️ Không tìm thấy " + fileName + "! Đang tạo file mới...");
+            if (isConfig) {
+                saveDefaultConfig();
+                reloadConfig();
+            } else {
+                saveResource(fileName, false);
+            }
+            getLogger().info("✅ File " + fileName + " đã được khôi phục!");
         }
     }
 
     public Config getConfigManager() {
         return configManager;
+    }
+    public MessageManager getMessageManager() {
+        return messageManager;
     }
 }

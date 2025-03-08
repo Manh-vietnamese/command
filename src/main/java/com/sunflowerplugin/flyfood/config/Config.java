@@ -1,5 +1,6 @@
-package com.sunflowerplugin.flyfood;
+package com.sunflowerplugin.flyfood.config;
 
+import com.sunflowerplugin.flyfood.MainPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
