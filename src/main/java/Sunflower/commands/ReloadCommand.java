@@ -21,20 +21,17 @@ public class ReloadCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage(messageManager.get("reload_missing_args"));
+        // 📌 Kiểm tra quyền `sun.admin`
+        if (!sender.hasPermission("sun.admin")) {
+            sender.sendMessage(messageManager.get("no_permission"));
             return false;
         }
 
-        if (args[0].equalsIgnoreCase("flyfood")) {
-            new ConfigValidator(plugin).validateFiles();
-            plugin.reloadConfigs();  // 📌 Khôi phục file nếu bị mất
-            foodCmd.clearCooldowns();  // Xóa cooldown khi reload
-            sender.sendMessage(messageManager.get("reload_success"));
-        }
+        new ConfigValidator(plugin).validateFiles();
+        plugin.reloadConfigs();  // 📌 Khôi phục file nếu bị mất
+        foodCmd.clearCooldowns();  // Xóa cooldown khi reload
+        sender.sendMessage(messageManager.get("plugin.reload_success"));
 
         return true;
     }
-
 }
-

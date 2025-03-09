@@ -9,9 +9,10 @@ commands:
   food:
     description: Restore hunger
     usage: /food
-  freload:
-    description: Reload plugin configuration
-    usage: /freload
   heal:
     description: Heal yourself to full health.
     usage: /heal
+  freload:
+    description: Reload plugin configuration
+    usage: /freload
+    permission: sun.admin
