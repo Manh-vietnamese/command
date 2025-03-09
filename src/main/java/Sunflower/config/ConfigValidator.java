@@ -1,6 +1,6 @@
-package com.sunflowerplugin.flyfood.config;
+package Sunflower.config;
 
-import com.sunflowerplugin.flyfood.MainPlugin;
+import Sunflower.MainPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

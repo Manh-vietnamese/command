@@ -1,6 +1,6 @@
-package com.sunflowerplugin.flyfood.messages;
+package Sunflower.messages;
 
-import org.bukkit.ChatColor;
+import Sunflower.MainPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,11 +13,13 @@ import java.util.logging.Logger;
 
 public class MessageManager {
 
+    private final MainPlugin plugin;
     private FileConfiguration messagesConfig;
     private final File messagesFile;
     private final Logger logger;
 
-    public MessageManager(File dataFolder, Logger logger) {
+    public MessageManager(MainPlugin plugin, File dataFolder, Logger logger) {
+        this.plugin = plugin;
         this.messagesFile = new File(dataFolder, "messages.yml");
         this.logger = logger;
         validateFile();
@@ -73,7 +75,15 @@ public class MessageManager {
     }
 
     public void reload() {
+        File messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+
+        if (!messagesFile.exists()) {
+            plugin.saveResource("messages.yml", false);
+            logger.info("✅ File messages.yml đã được khôi phục!");
+        }
+
         messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        logger.info("🔄 messages.yml đã được tải lại.");
     }
 
     public String get(String key) {
@@ -81,15 +91,31 @@ public class MessageManager {
     }
 
     public String get(String key, Map<String, String> placeholders) {
-        String msg = messagesConfig.getString(key, "&c[Không tìm thấy key: " + key + "]");
+        if (key == null) {
+            logger.severe("❌ Gọi messageManager.get() với key = null! Kiểm tra lại mã nguồn.");
+            return "⚠️ [Lỗi] Key không hợp lệ!";
+        }
 
-        if (placeholders != null) {
-            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-                msg = msg.replace("%" + entry.getKey() + "%", entry.getValue());
+        String message = messagesConfig.getString(key);
+
+        if (message == null) {
+            logger.warning("⚠️ Thiếu key trong messages.yml: " + key + ". Tự động tải lại file...");
+            reload();
+            message = messagesConfig.getString(key, "⚠️ [Lỗi] Không tìm thấy tin nhắn!");
+
+            if (message.equals("⚠️ [Lỗi] Không tìm thấy tin nhắn!")) {
+                logger.severe("❌ Key '" + key + "' vẫn bị thiếu sau khi reload!");
             }
         }
 
-        return ChatColor.translateAlternateColorCodes('&', msg);
+        // 📌 Kiểm tra nếu placeholders bị null để tránh lỗi NullPointerException
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+                message = message.replace("%" + entry.getKey() + "%", entry.getValue());
+            }
+        }
+
+        return message;
     }
 
     public void save() {

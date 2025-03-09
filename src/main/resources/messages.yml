@@ -1,16 +1,23 @@
 no_permission: "&cBạn không có quyền sử dụng lệnh này!"
-reload_success: "&aĐã reload thành công!"
 
 reload_missing_args: "&cThiếu tham số! Vui lòng nhập lại."
 Countdown: "⏳ Bạn phải đợi %time% giây trước khi sử dụng lần nữa."
-config_invalid: "&cLỗi trong file cấu hình! Đã tạo file mới."
-config_fixed: "&aFile cấu hình hợp lệ."
 
-fly_ready: "✅ Bây giờ bạn có thể sử dụng /fly lần nữa."
-fly_expired: "❌ Thời gian bay của bạn đã hết!"
-fly_disabled: "✈️ Chế độ bay đã bị tắt. Bạn phải đợi %time%s trước khi có thể bay lại."
-fly_enabled: "✈️ Chế độ bay đã được bật! Bạn có %time% giây."
-fly_time_left: "⏳ Thời gian bay còn lại: %time%s"
-fly_time_paused: "⏳ Thời gian tạm dừng: Bạn đang ở quá gần mặt đất!"
-food_executed: "🍽️ Lệnh food đã được thực thi!"
-heal_success: "❤️ Bạn đã được chữa lành hoàn toàn!"
+plugin:
+  reload_success: "&aĐã reload thành công!"
+  config_invalid: "&cLỗi trong file cấu hình! Đã tạo file mới."
+  config_fixed: "&aFile cấu hình hợp lệ."
+
+fly:
+  fly_ready: "✅ Bây giờ bạn có thể sử dụng /fly lần nữa."
+  fly_expired: "❌ Thời gian bay của bạn đã hết!"
+  fly_disabled: "✈️ Chế độ bay đã bị tắt. Bạn phải đợi %time%s trước khi có thể bay lại."
+  fly_enabled: "✈️ Chế độ bay đã được bật! Bạn có %time% giây."
+  fly_time_left: "⏳ Thời gian bay còn lại: %time%s"
+  fly_time_paused: "⏳ Thời gian tạm dừng: Bạn đang ở quá gần mặt đất!"
+
+food:
+  food_executed: "🍽️ Lệnh food đã được thực thi!"
+
+heal:
+  heal_success: "❤️ Bạn đã được chữa lành hoàn toàn!"

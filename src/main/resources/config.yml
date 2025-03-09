@@ -1,27 +1,46 @@
-# Cấu hình thời gian chờ (cooldown) cho food
+#               Quyền liên quan đến lệnh /food
 # sun.countdown.food.<vip>
+# sun.food.bypass	Bỏ qua cooldown khi sử dụng /food
 food-countdown:
-  vip2: 30
-  vip3: 20
-  vip4: 15
-  vip5: 10
+  vip0: 300
+  vip1: 180
+  vip2: 108
+  vip3: 65
+  vip4: 39
+  vip5: 23
 
-# sun.countdown.food.<vip>
+#               Quyền liên quan đến lệnh /heal
+# sun.countdown.heal.<vip>
+# sun.heal.bypass	Bỏ qua cooldown khi sử dụng /heal
 heal-countdown:
-  vip3: 720  # 12 phút cooldown
-  vip4: 480  # 8 phút cooldown
-  vip5: 300  # 5 phút cooldown
+  vip0: 420
+  vip1: 252
+  vip2: 151
+  vip3: 91
+  vip4: 55
+  vip5: 33
 
-# Cấu hình countdown cho fly
+#               Cấu hình countdown cho fly
+# sun.countdown.fly.<vip>
+fly-time: 60  # ⏳ Thời gian bay mặc định cho mọi người chơi (giây)
 fly-countdown:
-  vip0: 30
-  vip1: 20
-  vip2: 15
-  vip3: 10
+  vip0: 540
+  vip1: 432
+  vip2: 259
+  vip3: 155
+  vip4: 93
+  vip5: 56
 
 # Cấu hình thời gian bay (usage time)
 fly-usage-time:
-  vip0: 30
-  vip1: 60
-  vip2: 120
-  vip3: 180
+  vip0: 42
+  vip1: 70
+  vip2: 116
+  vip3: 194
+  vip4: 324
+  vip5: 540
+
+#           Quyền đặc biệt cho quản trị viên (Admin)
+# sun.admin	        Cho phép quản trị viên reload plugin bằng lệnh /freload
+# sun.fly.bypass	Bỏ qua countdown khi sử dụng /fly
+# sun.food.bypass	Bỏ qua cooldown khi sử dụng /food

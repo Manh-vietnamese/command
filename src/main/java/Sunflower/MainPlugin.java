@@ -1,12 +1,13 @@
-package com.sunflowerplugin.flyfood;
+package Sunflower;
 
-import com.sunflowerplugin.flyfood.commands.FlyCommand;
-import com.sunflowerplugin.flyfood.commands.FoodCommand;
-import com.sunflowerplugin.flyfood.commands.HealCommand;
-import com.sunflowerplugin.flyfood.commands.ReloadCommand;
-import com.sunflowerplugin.flyfood.config.Config;
-import com.sunflowerplugin.flyfood.messages.MessageManager;
+import Sunflower.commands.FlyCommand;
+import Sunflower.commands.FoodCommand;
+import Sunflower.commands.HealCommand;
+import Sunflower.commands.ReloadCommand;
+import Sunflower.config.Config;
+import Sunflower.messages.MessageManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -14,37 +15,42 @@ public class MainPlugin extends JavaPlugin {
 
     private Config configManager;
     private MessageManager messageManager;
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
         checkAndCreateConfig();
 
         this.configManager = new Config(this);
+
+        // 🔥 Sửa lỗi: Khởi tạo `messageManager` trước khi đăng ký lệnh
+        messageManager = new MessageManager(this, getDataFolder(), getLogger());
+
         FoodCommand foodCmd = new FoodCommand(this);
         HealCommand healCmd = new HealCommand(this);
 
-        // 🔥 Sửa lỗi: Truyền `getLogger()` vào `MessageManager`
-        messageManager = new MessageManager(getDataFolder(), getLogger());
-
-        // 📌 Đăng ký lệnh
+        // 📌 Đăng ký lệnh (Chỉ đăng ký nếu `messageManager` đã được tạo)
         Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand(this));
         Objects.requireNonNull(getCommand("food")).setExecutor(foodCmd);
         Objects.requireNonNull(getCommand("freload")).setExecutor(new ReloadCommand(this, foodCmd));
         Objects.requireNonNull(getCommand("heal")).setExecutor(healCmd);
+
+        getLogger().info("✅ Plugin FlyFood đã bật thành công!");
     }
 
     public void reloadConfigs() {
         try {
-            checkAndCreateConfig(); // 📌 Kiểm tra file khi reload
+            checkAndCreateConfig();
             configManager.reloadConfig();
             getLogger().info("✅ Cấu hình đã được tải lại thành công!");
         } catch (Exception e) {
             getLogger().severe("❌ Lỗi khi tải lại cấu hình: " + e.getMessage());
-            e.printStackTrace();
+            for (StackTraceElement element : e.getStackTrace()) {
+                getLogger().severe("    at " + element.toString());
+            }
         }
     }
 
-    // 📌 Kiểm tra và tạo lại file config.yml nếu bị mất
     private void checkAndCreateConfig() {
         createFile("config.yml", true);
         createFile("messages.yml", false);
@@ -67,7 +73,11 @@ public class MainPlugin extends JavaPlugin {
     public Config getConfigManager() {
         return configManager;
     }
+
     public MessageManager getMessageManager() {
+        if (messageManager == null) {
+            getLogger().severe("❌ MessageManager chưa được khởi tạo! Kiểm tra lại MainPlugin.java.");
+        }
         return messageManager;
     }
 }

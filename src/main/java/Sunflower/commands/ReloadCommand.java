@@ -1,8 +1,8 @@
-package com.sunflowerplugin.flyfood.commands;
+package Sunflower.commands;
 
-import com.sunflowerplugin.flyfood.MainPlugin;
-import com.sunflowerplugin.flyfood.config.ConfigValidator;
-import com.sunflowerplugin.flyfood.messages.MessageManager;
+import Sunflower.MainPlugin;
+import Sunflower.config.ConfigValidator;
+import Sunflower.messages.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

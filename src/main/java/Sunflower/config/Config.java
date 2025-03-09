@@ -1,6 +1,6 @@
-package com.sunflowerplugin.flyfood.config;
+package Sunflower.config;
 
-import com.sunflowerplugin.flyfood.MainPlugin;
+import Sunflower.MainPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
@@ -26,7 +26,7 @@ public class Config {
 
     // 📌 Lấy cooldown cho lệnh /heal từ config.yml
     public int getHealCountdown(String rank) {
-        return getConfig().getInt("heal-countdown." + rank, 300); // Mặc định là 5 phút nếu không có rank
+        return getConfig().getInt("heal-countdown." + rank, 300);
     }
 
     // 📌 Lấy cooldown cho lệnh /fly từ config.yml

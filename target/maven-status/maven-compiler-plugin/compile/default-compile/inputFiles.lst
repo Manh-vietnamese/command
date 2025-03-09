@@ -1,8 +1,8 @@
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\commands\FoodCommand.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\commands\HealCommand.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\commands\FlyCommand.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\commands\ReloadCommand.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\messages\MessageManager.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\config\Config.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\MainPlugin.java
-D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\com\sunflowerplugin\flyfood\config\ConfigValidator.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\commands\HealCommand.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\config\Config.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\commands\FoodCommand.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\commands\FlyCommand.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\messages\MessageManager.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\config\ConfigValidator.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\MainPlugin.java
+D:\Minecraaft\plugin_test\dự án mới\giftcode\plugin1\src\main\java\Sunflower\commands\ReloadCommand.java

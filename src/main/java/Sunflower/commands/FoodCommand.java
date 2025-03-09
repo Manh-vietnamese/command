@@ -1,8 +1,8 @@
-package com.sunflowerplugin.flyfood.commands;
+package Sunflower.commands;
 
-import com.sunflowerplugin.flyfood.config.Config;
-import com.sunflowerplugin.flyfood.MainPlugin;
-import com.sunflowerplugin.flyfood.messages.MessageManager;
+import Sunflower.config.Config;
+import Sunflower.MainPlugin;
+import Sunflower.messages.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,7 +65,7 @@ public class FoodCommand implements CommandExecutor {
 
         // 📌 Lưu thời gian cooldown
         foodCooldowns.put(player, System.currentTimeMillis());
-        player.sendMessage(messageManager.get("food_executed"));
+        player.sendMessage(messageManager.get("food.food_executed"));
 
         return true;
     }
@@ -80,6 +80,8 @@ public class FoodCommand implements CommandExecutor {
         if (player.hasPermission("sun.countdown.food.vip4")) return "vip4";
         if (player.hasPermission("sun.countdown.food.vip3")) return "vip3";
         if (player.hasPermission("sun.countdown.food.vip2")) return "vip2";
-        return null;  // Nếu không có quyền, trả về `null`
+        if (player.hasPermission("sun.countdown.food.vip1")) return "vip1";
+        if (player.hasPermission("sun.countdown.food.vip0")) return "vip0";
+        return null;  // Nếu không có quyền, trả về `null0
     }
 }

@@ -1,7 +1,7 @@
-package com.sunflowerplugin.flyfood.commands;
+package Sunflower.commands;
 
-import com.sunflowerplugin.flyfood.config.Config;
-import com.sunflowerplugin.flyfood.MainPlugin;
+import Sunflower.config.Config;
+import Sunflower.MainPlugin;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
@@ -80,7 +80,7 @@ public class FlyCommand implements CommandExecutor {
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("time", String.valueOf(flyUsageTime));
-        player.sendMessage(plugin.getMessageManager().get("fly_enabled", placeholders));
+        player.sendMessage(plugin.getMessageManager().get("fly.fly_enabled", placeholders));
 
         // 📌 Bắt đầu bộ đếm thời gian bay
         new BukkitRunnable() {
@@ -97,7 +97,7 @@ public class FlyCommand implements CommandExecutor {
                 if (remainingTime > 0) {
                     Map<String, String> placeholders = new HashMap<>();
                     placeholders.put("time", String.valueOf(remainingTime));
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(plugin.getMessageManager().get("fly_time_left", placeholders)));
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(plugin.getMessageManager().get("fly.fly_time_left", placeholders)));
                 } else {
                     disableFlight(player, plugin.getConfigManager().getFlyCountdown(getPlayerRank(player)));
                     cancel();
@@ -117,7 +117,7 @@ public class FlyCommand implements CommandExecutor {
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("time", String.valueOf(countdownTime));
-        player.sendMessage(plugin.getMessageManager().get("fly_disabled", placeholders));
+        player.sendMessage(plugin.getMessageManager().get("fly.fly_disabled", placeholders));
 
         // 📌 Bắt đầu countdown
         new BukkitRunnable() {
@@ -129,7 +129,7 @@ public class FlyCommand implements CommandExecutor {
                 } else {
                     countdownActive.put(player, false);
                     flyCountdownRemaining.remove(player);
-                    player.sendMessage(plugin.getMessageManager().get("fly_ready"));
+                    player.sendMessage(plugin.getMessageManager().get("fly.fly_ready"));
                     cancel();
                 }
             }
@@ -138,6 +138,8 @@ public class FlyCommand implements CommandExecutor {
 
     // 📌 Kiểm tra quyền của người chơi theo đúng `config.yml`
     private String getPlayerRank(Player player) {
+        if (player.hasPermission("sun.usage.time.fly.vip5")) return "vip5";
+        if (player.hasPermission("sun.usage.time.fly.vip4")) return "vip4";
         if (player.hasPermission("sun.usage.time.fly.vip3")) return "vip3";
         if (player.hasPermission("sun.usage.time.fly.vip2")) return "vip2";
         if (player.hasPermission("sun.usage.time.fly.vip1")) return "vip1";
