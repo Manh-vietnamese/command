@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GiftCodePlugin.iml" filepath="$PROJECT_DIR$/GiftCodePlugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sunflower.iml" filepath="$PROJECT_DIR$/Sunflower.iml" />
     </modules>
   </component>
 </project>
